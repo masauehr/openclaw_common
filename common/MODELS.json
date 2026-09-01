@@ -1,0 +1,363 @@
+{
+  "schema_version": "1.0",
+  "last_updated": "2026-09-01T10:15:00Z",
+  "description": "OpenClaw サポートモデル一覧（リファレンス）",
+  "providers": {
+    "anthropic": {
+      "name": "Anthropic (Claude)",
+      "description": "クラウド型 LLM API",
+      "auth_method": "setup-token",
+      "auth_required": true,
+      "internet_required": true,
+      "models": [
+        {
+          "id": "claude-opus-4-6",
+          "name": "Claude Opus 4.6",
+          "capabilities": [
+            "text-generation",
+            "code-generation",
+            "reasoning",
+            "vision"
+          ],
+          "speed": "slow",
+          "quality": "excellent",
+          "cost": "high",
+          "context_window": 200000,
+          "recommended_for": [
+            "high-quality analysis",
+            "complex reasoning",
+            "multi-step problems"
+          ],
+          "notes": "最高性能。コスト高い。"
+        },
+        {
+          "id": "claude-sonnet-5",
+          "name": "Claude Sonnet 5",
+          "capabilities": [
+            "text-generation",
+            "code-generation",
+            "reasoning",
+            "vision"
+          ],
+          "speed": "medium",
+          "quality": "excellent",
+          "cost": "medium",
+          "context_window": 200000,
+          "recommended_for": [
+            "balanced tasks",
+            "web search integration",
+            "cron fallback"
+          ],
+          "notes": "バランス型。このMacでは cron fallback として使用。",
+          "in_use": false
+        },
+        {
+          "id": "claude-haiku-4-5",
+          "name": "Claude Haiku 4.5",
+          "capabilities": [
+            "text-generation",
+            "code-generation"
+          ],
+          "speed": "fast",
+          "quality": "good",
+          "cost": "low",
+          "context_window": 200000,
+          "recommended_for": [
+            "fast responses",
+            "cost optimization",
+            "daily conversation",
+            "cron jobs"
+          ],
+          "notes": "推奨。対話・cron 両用。速度・コスト最適。",
+          "in_use": true,
+          "primary_model": true
+        }
+      ],
+      "setup_instructions": {
+        "step_1": "npm install -g @anthropic-ai/claude-cli",
+        "step_2": "claude setup-token",
+        "step_3": "openclaw models auth login --provider anthropic",
+        "step_4": "openclaw models list --provider anthropic"
+      }
+    },
+    "ollama": {
+      "name": "Ollama",
+      "description": "ローカル実行型 LLM",
+      "auth_method": "none",
+      "auth_required": false,
+      "internet_required": false,
+      "endpoint": "http://localhost:11434",
+      "models": [
+        {
+          "id": "qwen3.6:35b-mlx",
+          "name": "Qwen 3.6 35B MLX",
+          "capabilities": [
+            "text-generation"
+          ],
+          "speed": "slow",
+          "quality": "medium",
+          "cost": "free",
+          "context_window": 262144,
+          "hardware_requirement": "Mac with GPU (M1/M2/M3+)",
+          "recommended_for": [
+            "fallback (when quota exhausted)",
+            "local-only operation",
+            "testing"
+          ],
+          "notes": "ローカル実行。日本語対話は中～低品質（中国語混入の可能性）。このMacでは対話 fallback として登録。",
+          "in_use": true,
+          "quality_issues": [
+            "hallucinations",
+            "chinese_mix",
+            "slow_response"
+          ]
+        },
+        {
+          "id": "ornith-1.5:35b",
+          "name": "Ornith 1.5 35B",
+          "capabilities": [
+            "text-generation"
+          ],
+          "speed": "very-slow",
+          "quality": "poor",
+          "cost": "free",
+          "context_window": 262144,
+          "hardware_requirement": "Mac with GPU",
+          "recommended_for": [],
+          "notes": "非推奨。性能不適切（無反応多し、遅延大）。テスト用のみ。",
+          "in_use": false,
+          "quality_issues": [
+            "no_response",
+            "extreme_latency",
+            "hallucinations"
+          ]
+        },
+        {
+          "id": "nemotron:12b-instruct",
+          "name": "Nemotron 12B Instruct",
+          "capabilities": [
+            "text-generation",
+            "code-generation"
+          ],
+          "speed": "slow",
+          "quality": "medium",
+          "cost": "free",
+          "context_window": 131072,
+          "hardware_requirement": "Mac with 16GB+ RAM",
+          "recommended_for": [
+            "testing",
+            "local operation"
+          ],
+          "notes": "試験段階。日本語対話性能未確認。",
+          "in_use": false
+        }
+      ],
+      "setup_instructions": {
+        "step_1": "brew install ollama",
+        "step_2": "ollama serve",
+        "step_3": "ollama pull qwen3.6:35b-mlx",
+        "step_4": "openclaw models list --provider ollama"
+      }
+    },
+    "openai": {
+      "name": "OpenAI",
+      "description": "クラウド型 LLM API（未設定）",
+      "auth_method": "api_key",
+      "auth_required": true,
+      "internet_required": true,
+      "models": [
+        {
+          "id": "gpt-4o",
+          "name": "GPT-4o",
+          "capabilities": [
+            "text-generation",
+            "code-generation",
+            "vision"
+          ],
+          "speed": "medium",
+          "quality": "excellent",
+          "cost": "high",
+          "context_window": 128000,
+          "recommended_for": [
+            "advanced reasoning",
+            "vision tasks"
+          ],
+          "notes": "このMacでは未設定。必要に応じて設定可能。"
+        }
+      ],
+      "status": "not_configured",
+      "setup_instructions": {
+        "step_1": "Obtain API key from https://platform.openai.com/api-keys",
+        "step_2": "openclaw models auth login --provider openai",
+        "step_3": "openclaw config set agents.defaults.model.primary gpt-4o"
+      }
+    }
+  },
+  "recommended_configurations": {
+    "fast_responsive": {
+      "name": "速度重視（推奨）",
+      "primary": "anthropic/claude-haiku-4-5",
+      "fallbacks": [
+        "anthropic/claude-sonnet-5",
+        "ollama/qwen3.6:35b-mlx"
+      ],
+      "use_case": "日常対話・web検索・cron",
+      "estimated_cost": "低～中"
+    },
+    "high_quality": {
+      "name": "高品質重視",
+      "primary": "anthropic/claude-sonnet-5",
+      "fallbacks": [
+        "anthropic/claude-opus-4-6",
+        "anthropic/claude-haiku-4-5"
+      ],
+      "use_case": "複雑な問題・高精度が必要",
+      "estimated_cost": "中～高"
+    },
+    "cost_optimized": {
+      "name": "コスト最適化",
+      "primary": "anthropic/claude-haiku-4-5",
+      "fallbacks": [
+        "ollama/qwen3.6:35b-mlx"
+      ],
+      "use_case": "低コスト・オフライン対応",
+      "estimated_cost": "低～無料"
+    },
+    "offline_only": {
+      "name": "オフライン専用",
+      "primary": "ollama/qwen3.6:35b-mlx",
+      "fallbacks": [],
+      "use_case": "インターネット非接続環境",
+      "estimated_cost": "無料",
+      "notes": "品質は低い。テスト用途のみ推奨。"
+    }
+  },
+  "this_mac_configuration": {
+    "description": "このMac（2026-09-01 時点）での実際の構成",
+    "primary_model": {
+      "id": "anthropic/claude-haiku-4-5",
+      "reason": "速度・品質・コストのバランス"
+    },
+    "fallback_models": [
+      {
+        "id": "anthropic/claude-sonnet-5",
+        "reason": "cron ジョブ用。高品質必要時。",
+        "trigger": "haiku タイムアウト / 品質要求時"
+      },
+      {
+        "id": "ollama/qwen3.6:35b-mlx",
+        "reason": "対話用 fallback。Anthropic 課金枠切れ時。",
+        "trigger": "Anthropic API 利用不可時"
+      }
+    ],
+    "disabled_models": [
+      {
+        "id": "ollama/ornith-1.5:35b",
+        "reason": "性能不適切（無反応多し、遅延大）"
+      }
+    ],
+    "web_search_provider": "searxng",
+    "web_search_endpoint": "http://127.0.0.1:18899"
+  },
+  "model_capabilities_matrix": {
+    "headers": [
+      "Model",
+      "Speed",
+      "Quality",
+      "Japanese",
+      "Code",
+      "Vision",
+      "Cost",
+      "Local"
+    ],
+    "rows": [
+      {
+        "model": "claude-opus-4-6",
+        "speed": "★☆☆",
+        "quality": "★★★",
+        "japanese": "優秀",
+        "code": "優秀",
+        "vision": "優秀",
+        "cost": "★★★",
+        "local": "✗"
+      },
+      {
+        "model": "claude-sonnet-5",
+        "speed": "★★☆",
+        "quality": "★★★",
+        "japanese": "優秀",
+        "code": "優秀",
+        "vision": "優秀",
+        "cost": "★★☆",
+        "local": "✗"
+      },
+      {
+        "model": "claude-haiku-4-5",
+        "speed": "★★★",
+        "quality": "★★☆",
+        "japanese": "優秀",
+        "code": "良好",
+        "vision": "良好",
+        "cost": "★☆☆",
+        "local": "✗",
+        "recommended": true
+      },
+      {
+        "model": "qwen3.6:35b-mlx",
+        "speed": "★☆☆",
+        "quality": "★★☆",
+        "japanese": "中～低（混入）",
+        "code": "中",
+        "vision": "✗",
+        "cost": "無料",
+        "local": "✓"
+      },
+      {
+        "model": "ornith-1.5:35b",
+        "speed": "★☆☆",
+        "quality": "★☆☆",
+        "japanese": "無反応",
+        "code": "低",
+        "vision": "✗",
+        "cost": "無料",
+        "local": "✓",
+        "notes": "非推奨"
+      }
+    ]
+  },
+  "cost_estimation": {
+    "note": "Claude Pro サブスク月額 $20（固定）。以下は参考値。",
+    "per_1k_tokens": {
+      "claude-opus-4-6": "$0.015",
+      "claude-sonnet-5": "$0.003",
+      "claude-haiku-4-5": "$0.00008"
+    },
+    "typical_monthly_usage": {
+      "scenario": "日常対話 + cron 3本 / 朝 09:10-09:16",
+      "estimated_tokens": "50,000-100,000 tokens/month",
+      "estimated_cost": "$0.50-$1.00 with Claude Pro (余剰無駄)"
+    }
+  },
+  "version_history": {
+    "2026.7.1-2": {
+      "date": "2026-08-29",
+      "notes": "現在使用中のバージョン",
+      "major_changes": [
+        "Slack Socket Mode 対応",
+        "SearXNG 統合",
+        "Cron ジョブ機能安定化"
+      ]
+    },
+    "2026.7.0": {
+      "date": "2026-08-01",
+      "notes": "初版リリース",
+      "major_changes": []
+    }
+  },
+  "links_and_references": {
+    "anthropic_models": "https://docs.anthropic.com/claude/reference/getting-started-with-the-api",
+    "ollama_models": "https://ollama.ai",
+    "openclaw_docs": "https://docs.openclaw.ai/concepts/models",
+    "this_project": "https://github.com/masauehr/openclaw_prj"
+  }
+}
