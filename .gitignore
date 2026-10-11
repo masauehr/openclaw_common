@@ -2,3 +2,6 @@
 *.tmp
 __pycache__/
 *.log
+
+# automated-data-collector は独立したリポジトリ（masauehr/automated-data-collector）。二重管理を避ける
+projects/automated-data-collector/
