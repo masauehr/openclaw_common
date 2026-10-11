@@ -52,11 +52,19 @@ openclaw_prj/
 │   └── MODELS.json              モデル一覧（JSON リファレンス）
 │
 └── projects/                    プロジェクト管理
-    └── automated-data-collector/ 気象・経済・AI の自動データ収集
-        ├── README.md
-        ├── SETUP-NOTES.md
-        └── .gitignore
+    └── automated-data-collector/ 気象・経済・AI の自動データ収集・配信（※独立した git リポジトリ。本リポジトリでは追跡しない）
 ```
+
+---
+
+## 🔗 関連リポジトリ
+
+| リポジトリ | 内容 |
+|---|---|
+| **[automated-data-collector](https://github.com/masauehr/automated-data-collector)**（`projects/automated-data-collector/`） | OpenClaw の cron（Slack 配信）と Bluesky 自動投稿の運用。cron の指示文・設定、投稿スクリプト、作業記録。**独立リポジトリ**で、本リポジトリは追跡しない（二重管理を避ける）。Bluesky 自動投稿は OpenClaw を使わない B版（launchd＋Claude Code CLI＋MCP）が本番で、**Claude Code と MCP ツールの活用**が要点 |
+| **[openclaw_setup](https://github.com/masauehr/openclaw_setup)**（`~/projects/openclaw_setup/`） | OpenClaw を Mac に導入するまでの作業記録と運用マニュアル |
+
+導入・基盤は本リポジトリ／openclaw_setup、導入後に動かす自動処理の変更は automated-data-collector に記録する。
 
 ---
 
